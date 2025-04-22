@@ -1,4 +1,4 @@
-package role.domain;
+package com.chokchok.chokchokapi.role.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

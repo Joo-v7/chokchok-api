@@ -1,8 +1,8 @@
-package member.domain;
+package com.chokchok.chokchokapi.member.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import member.exception.InvalidStatusValueException;
+import com.chokchok.chokchokapi.member.exception.InvalidStatusValueException;
 
 public enum Status {
     ACTIVE("활성화"),

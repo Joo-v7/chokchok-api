@@ -1,8 +1,8 @@
-package member.domain;
+package com.chokchok.chokchokapi.member.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import member.exception.InvalidGenderValueException;
+import com.chokchok.chokchokapi.member.exception.InvalidGenderValueException;
 
 public enum Gender {
     MALE("남성"),

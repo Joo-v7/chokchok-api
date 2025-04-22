@@ -1,6 +1,6 @@
-package member.domain;
+package com.chokchok.chokchokapi.member.domain;
 
-import grade.domain.Grade;
+import com.chokchok.chokchokapi.grade.domain.Grade;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import role.domain.Role;
+import com.chokchok.chokchokapi.role.domain.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

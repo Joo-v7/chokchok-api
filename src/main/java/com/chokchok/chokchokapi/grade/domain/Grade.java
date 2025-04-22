@@ -1,4 +1,4 @@
-package grade.domain;
+package com.chokchok.chokchokapi.grade.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,6 +1,6 @@
-package grade.repository;
+package com.chokchok.chokchokapi.grade.repository;
 
-import grade.domain.Grade;
+import com.chokchok.chokchokapi.grade.domain.Grade;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GradeRepository extends JpaRepository<Grade, Integer> {

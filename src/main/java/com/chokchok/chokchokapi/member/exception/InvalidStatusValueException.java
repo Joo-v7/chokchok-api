@@ -1,4 +1,4 @@
-package member.exception;
+package com.chokchok.chokchokapi.member.exception;
 
 import com.chokchok.chokchokapi.common.exception.base.InvalidEnumValueException;
 
