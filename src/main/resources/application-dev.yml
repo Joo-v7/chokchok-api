@@ -7,9 +7,13 @@ spring:
     activate:
       on-profile: dev
 
+  h2:
+    console:
+      enabled: true
+
   # H2
   datasource:
-    url: jdbc:h2:mem:accountdb
+    url: jdbc:h2:mem:chokchokdb
     driver-class-name: org.h2.Driver
     username: sa
     password: ""
