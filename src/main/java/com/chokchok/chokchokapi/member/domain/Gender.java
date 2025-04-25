@@ -1,8 +1,9 @@
-package member.domain;
+package com.chokchok.chokchokapi.member.domain;
 
+import com.chokchok.chokchokapi.common.exception.base.InvalidException;
+import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import member.exception.InvalidGenderValueException;
 
 public enum Gender {
     MALE("남성"),
@@ -27,7 +28,7 @@ public enum Gender {
                 return gender;
             }
         }
-        throw new InvalidGenderValueException("gender 값이 올바르지 않습니다");
+        throw new InvalidException(ErrorCode.INVALID_MEMBER_GENDER_VALUE, "gender 값이 올바르지 않습니다");
     }
 
 }

@@ -1,4 +1,4 @@
-package grade.domain;
+package com.chokchok.chokchokapi.member.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name="grades")
+@Table(name="member_grades")
 @Entity
-public class Grade {
+public class MemberGrade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +34,14 @@ public class Grade {
     @Column(nullable = false)
     private String description;
 
-    private Grade(String name, Integer accumulationRate, String description) {
+    private MemberGrade(String name, Integer accumulationRate, String description) {
         this.name = name;
         this.accumulationRate = accumulationRate;
         this.description = description;
     }
 
-    public static Grade create(String name, Integer accumulationRate, String description) {
-        return new Grade(name, accumulationRate, description);
+    public static MemberGrade create(String name, Integer accumulationRate, String description) {
+        return new MemberGrade(name, accumulationRate, description);
     }
 
 }
