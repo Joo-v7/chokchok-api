@@ -19,6 +19,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # github Actions을 위해 DB 정보 - secrets를 환경변수로 주입
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
