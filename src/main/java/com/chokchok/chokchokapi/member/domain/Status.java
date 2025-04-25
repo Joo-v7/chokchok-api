@@ -1,8 +1,9 @@
 package com.chokchok.chokchokapi.member.domain;
 
+import com.chokchok.chokchokapi.common.exception.base.InvalidException;
+import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.chokchok.chokchokapi.member.exception.InvalidStatusValueException;
 
 public enum Status {
     ACTIVE("활성화"),
@@ -27,7 +28,7 @@ public enum Status {
                 return status;
             }
         }
-        throw new InvalidStatusValueException("status 값이 올바르지 않습니다");
+        throw new InvalidException(ErrorCode.INVALID_MEMBER_STATUS_VALUE, "status 값이 올바르지 않습니다");
     }
 
     public boolean isActive() {

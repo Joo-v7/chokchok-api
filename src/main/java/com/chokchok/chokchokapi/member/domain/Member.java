@@ -1,6 +1,5 @@
 package com.chokchok.chokchokapi.member.domain;
 
-import com.chokchok.chokchokapi.grade.domain.Grade;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import com.chokchok.chokchokapi.role.domain.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,11 +26,11 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    private MemberRole memberRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grade_id", nullable = false)
-    private Grade grade;
+    private MemberGrade memberGrade;
 
     @Column(nullable = false, unique = true, length = 20)
     private String username;
@@ -61,9 +59,9 @@ public class Member {
     @Column
     private LocalDateTime lastLoginAt;
 
-    private Member(Role role, Grade grade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
-        this.role = role;
-        this.grade = grade;
+    private Member(MemberRole memberRole, MemberGrade memberGrade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
+        this.memberRole = memberRole;
+        this.memberGrade = memberGrade;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -72,8 +70,8 @@ public class Member {
         this.status = Status.ACTIVE;
     }
 
-    public static Member create(Role role, Grade grade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
-        Member member = new Member(role, grade, email, password, username, dateOfBirth, gender);
+    public static Member create(MemberRole memberRole, MemberGrade memberGrade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
+        Member member = new Member(memberRole, memberGrade, email, password, username, dateOfBirth, gender);
         return member;
     }
 
