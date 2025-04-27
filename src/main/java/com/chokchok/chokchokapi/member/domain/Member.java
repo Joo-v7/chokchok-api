@@ -70,9 +70,46 @@ public class Member {
         this.status = Status.ACTIVE;
     }
 
+    /**
+     * 회원을 생성하는 정적 팰토리 메소드
+     * @return Member
+     */
     public static Member create(MemberRole memberRole, MemberGrade memberGrade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
         Member member = new Member(memberRole, memberGrade, email, password, username, dateOfBirth, gender);
         return member;
     }
+
+    /**
+     * 회원의 사용자명을 업데이트하는 메소드
+     * @param username
+     */
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * 회원의 이메일을 업데이트하는 메소드
+     * @param email
+     */
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * 회원의 비밀번호를 업데이트하는 메소드
+     * @param password
+     */
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * 회원의 상태를 업데이트하는 메소드
+     * @param status
+     */
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
+
 
 }
