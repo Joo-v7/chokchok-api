@@ -10,6 +10,14 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RoleCheck {
-    String role() default "ROLE_USER";
+public @interface CheckRole {
+    /**
+     * 정확한 role 을 요구할 때 사용
+     */
+    String hasRole() default "";
+
+    /**
+     * 여러 역할 중 하나라도 일치하면 접근을 허용할 때 사용
+     */
+    String[] hasAnyRole() default {};
 }
