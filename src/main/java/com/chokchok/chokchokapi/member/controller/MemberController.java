@@ -2,10 +2,7 @@ package com.chokchok.chokchokapi.member.controller;
 
 import com.chokchok.chokchokapi.common.aop.annotation.CheckRole;
 import com.chokchok.chokchokapi.common.dto.ResponseDto;
-import com.chokchok.chokchokapi.member.dto.request.MemberEmailUpdateRequestDto;
-import com.chokchok.chokchokapi.member.dto.request.MemberPasswordUpdateRequestDto;
-import com.chokchok.chokchokapi.member.dto.request.MemberRegisterRequestDto;
-import com.chokchok.chokchokapi.member.dto.request.MemberUsernameUpdateRequestDto;
+import com.chokchok.chokchokapi.member.dto.request.*;
 import com.chokchok.chokchokapi.member.dto.response.MemberRegisterResponseDto;
 import com.chokchok.chokchokapi.member.dto.response.MemberStatusResponseDto;
 import com.chokchok.chokchokapi.member.dto.response.MemberUpdateResponseDto;
@@ -17,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 회원에 관련된 ResponseController
+ * 회원에 관련된 처리를 담당하는 컨트롤러
  */
 @Slf4j
 @RequiredArgsConstructor

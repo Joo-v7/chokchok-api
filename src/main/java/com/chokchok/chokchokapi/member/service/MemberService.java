@@ -167,7 +167,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(password);
 
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: {}" + memberId)
         );
 
         member.updatePassword(encodedPassword);
@@ -183,7 +183,7 @@ public class MemberService {
     @Transactional
     public MemberStatusResponseDto withdraw(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: {}" + memberId)
         );
 
         member.updateStatus(Status.DELETED);
