@@ -6,8 +6,14 @@ import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.member.domain.Member;
 import com.chokchok.chokchokapi.member.domain.MemberGrade;
 import com.chokchok.chokchokapi.member.domain.MemberRole;
-import com.chokchok.chokchokapi.member.dto.MemberRegisterRequestDto;
-import com.chokchok.chokchokapi.member.dto.MemberResponseDto;
+import com.chokchok.chokchokapi.member.domain.Status;
+import com.chokchok.chokchokapi.member.dto.request.MemberEmailUpdateRequestDto;
+import com.chokchok.chokchokapi.member.dto.request.MemberPasswordUpdateRequestDto;
+import com.chokchok.chokchokapi.member.dto.request.MemberRegisterRequestDto;
+import com.chokchok.chokchokapi.member.dto.request.MemberUsernameUpdateRequestDto;
+import com.chokchok.chokchokapi.member.dto.response.MemberRegisterResponseDto;
+import com.chokchok.chokchokapi.member.dto.response.MemberStatusResponseDto;
+import com.chokchok.chokchokapi.member.dto.response.MemberUpdateResponseDto;
 import com.chokchok.chokchokapi.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원 조회/등록/수정/삭제
+ * 회원 등록/수정/삭제를 담당하는 클래스
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -30,24 +36,12 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 회원 조회 by id(P.K.)
-     * @param id
-     * @return MemberResponseDto
-     */
-    @Transactional(readOnly = true)
-    public MemberResponseDto getMemberById(Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + id));
-        return MemberResponseDto.from(member);
-    }
-
-    /**
      * 회원 등록(회원 가입)
      * @param memberRegisterRequestDto
-     * @return
+     * @return MemberRegisterResponseDto
      */
     @Transactional
-    public MemberResponseDto register(MemberRegisterRequestDto memberRegisterRequestDto) {
+    public MemberRegisterResponseDto register(MemberRegisterRequestDto memberRegisterRequestDto) {
         // username, email 중복 체크
         checkDuplication(memberRegisterRequestDto.username(), memberRegisterRequestDto.email());
 
@@ -71,7 +65,7 @@ public class MemberService {
 
         try {
             Member savedMember = memberRepository.save(member);
-            return MemberResponseDto.from(savedMember);
+            return MemberRegisterResponseDto.from(savedMember);
         } catch (DataIntegrityViolationException e) {
             log.error("회원 등록 중 데이터 무결성 위반 발생: {}", e.getMessage());
             throw new ConflictException(ErrorCode.MEMBER_ALREADY_EXISTS, "이미 존재하는 회원입니다.");
@@ -86,6 +80,7 @@ public class MemberService {
      * 회원가입 시 중복 사항을 체크하는 메소드
      * @param username 조회 대상
      * @param email 조회 대상
+     * @throws ConflictException username, email 이 기존에 있다면 발생하는 예외
      */
     private void checkDuplication(String username, String email) {
         if (memberRepository.existsMemberByUsername(username)) {
@@ -98,22 +93,102 @@ public class MemberService {
     }
 
     /**
-     * username 중복 체크
-     * @param username
-     * @return boolean
+     * 회원정보 수정 - username
+     * @param memberId
+     * @param memberUsernameUpdateRequestDto
+     * @return MemberUpdateResponseDto
      */
-    public boolean existsByUsername(String username) {
-        return memberRepository.existsMemberByUsername(username);
+    @Transactional
+    public MemberUpdateResponseDto updateUsername(
+            Long memberId,
+            MemberUsernameUpdateRequestDto memberUsernameUpdateRequestDto
+    ) {
+        String username = memberUsernameUpdateRequestDto.username();
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+        );
+
+        checkUsernameDuplication(username);
+
+        member.updateUsername(username);
+
+        return MemberUpdateResponseDto.from(member);
+    }
+
+    private void checkUsernameDuplication(String username) {
+        if(memberRepository.existsMemberByUsername(username)) {
+           throw new ConflictException(ErrorCode.MEMBER_NAME_ALREADY_EXISTS, "이미 사용중인 사용자 이름입니다.");
+        }
     }
 
     /**
-     * email 중복 체크
-     * @param email
-     * @return boolean
+     * 회원정보 수정 - email
+     * @param memberId
+     * @param memberEmailUpdateRequestDto
+     * @return MemberUpdateResponseDto
      */
-    public boolean existsByEmail(String email) {
-        return memberRepository.existsMemberByEmail(email);
+    @Transactional
+    public MemberUpdateResponseDto updateEmail(
+            Long memberId,
+            MemberEmailUpdateRequestDto memberEmailUpdateRequestDto
+    ) {
+        String email = memberEmailUpdateRequestDto.email();
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+        );
+
+        checkEmailDuplication(email);
+
+        member.updateEmail(email);
+
+        return MemberUpdateResponseDto.from(member);
     }
 
+    private void checkEmailDuplication(String email) {
+        if(memberRepository.existsMemberByEmail(email)) {
+            throw new ConflictException(ErrorCode.MEMBER_EMAIL_ALREADY_EXISTS, "이미 사용중인 이메일입니다.");
+        }
+    }
+
+    /**
+     * 회원정보 수정 - password
+     * @param memberId
+     * @param memberPasswordUpdateRequestDto
+     * @return MemberUpdateResponseDto
+     */
+    @Transactional
+    public MemberUpdateResponseDto updatePassword(
+            Long memberId,
+            MemberPasswordUpdateRequestDto memberPasswordUpdateRequestDto
+    ) {
+        String password = memberPasswordUpdateRequestDto.password();
+        String encodedPassword = passwordEncoder.encode(password);
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+        );
+
+        member.updatePassword(encodedPassword);
+
+        return MemberUpdateResponseDto.from(member);
+    }
+
+    /**
+     * 회원 삭제 - 회원 상태 DELETED 로 변경
+     * @param memberId
+     * @return MemberStatusResponseDto
+     */
+    @Transactional
+    public MemberStatusResponseDto withdraw(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+        );
+
+        member.updateStatus(Status.DELETED);
+
+        return MemberStatusResponseDto.from(member);
+    }
 
 }
