@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원 권한 조회/등록/수정/삭제
+ * 회원권한 조회를 담당하는 서비스
  */
 @Slf4j
 @RequiredArgsConstructor

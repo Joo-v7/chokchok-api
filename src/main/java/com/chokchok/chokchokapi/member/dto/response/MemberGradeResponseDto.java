@@ -1,7 +1,14 @@
-package com.chokchok.chokchokapi.member.dto;
+package com.chokchok.chokchokapi.member.dto.response;
 
 import com.chokchok.chokchokapi.member.domain.MemberGrade;
 
+/**
+ * 회원등급 response DTO
+ * @param id
+ * @param name
+ * @param accumulationRate
+ * @param description
+ */
 public record MemberGradeResponseDto(
         Integer id,
         String name,
