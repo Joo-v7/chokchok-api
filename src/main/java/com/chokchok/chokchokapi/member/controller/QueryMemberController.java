@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 회원 조회에 관련된 RestController
+ * 회원 조회에 관련된 처리를 담당하는 컨트롤러
  */
 @Slf4j
 @RequiredArgsConstructor
