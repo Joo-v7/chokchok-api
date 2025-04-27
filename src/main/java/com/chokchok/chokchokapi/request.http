@@ -1,4 +1,4 @@
-### 회원가입
+### 1. 회원가입
 POST http://localhost:9100/api/members
 Content-Type: application/json
 
@@ -30,4 +30,66 @@ Date: Sun, 27 Apr 2025 09:49:20 GMT
     "memberRole": "ROLE_USER"
   },
   "timestamp": "2025-04-27T18:49:20.788947"
+}
+
+### 2. 회원 정보 조회
+GET http://localhost:9100/api/members/info
+X-MEMBER-ID: 704367952286454980
+X-MEMBER-ROLE: ROLE_USER
+
+### 회원 정보 조회 성공 응답
+HTTP/1.1 200
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 27 Apr 2025 16:28:16 GMT
+
+{
+  "success": true,
+  "status": "OK",
+  "data": {
+    "id": 704367952286454980,
+    "username": "test",
+    "email": "test@example.com",
+    "dateOfBirth": "1999-09-09",
+    "gender": "MALE",
+    "status": "ACTIVE",
+    "createdAt": "2025-04-28T01:26:46.354567",
+    "lastLoginAt": null,
+    "memberRole": {
+      "id": 1,
+      "name": "user",
+      "authority": "ROLE_USER"
+    },
+    "memberGrade": {
+      "id": 1,
+      "name": "BASIC",
+      "accumulationRate": 1,
+      "description": "결제 시 순수금액의 1% 포인트 정립"
+    }
+  },
+  "timestamp": "2025-04-28T01:28:16.612654"
+}
+
+### 3. 로그인 정보 조회
+GET http://localhost:9100/api/members/login/test@example.com
+
+### 로그인 성공 응답
+HTTP/1.1 200
+Content-Disposition: inline;filename=f.txt
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 27 Apr 2025 16:22:08 GMT
+
+{
+  "success": true,
+  "status": "OK",
+  "data": {
+    "id": 704366572067308541,
+    "username": "test",
+    "email": "test@example.com",
+    "password": "$2a$10$fIHDbVoToxiTaV4QcQtzAemzO0zFlCMUyA9/LWdhBxwdNUo78KkGK",
+    "status": "활성화",
+    "memberRole": "ROLE_USER"
+  },
+  "timestamp": "2025-04-28T01:22:08.930342"
 }
