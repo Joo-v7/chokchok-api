@@ -1,4 +1,4 @@
-package com.chokchok.chokchokapi.common.exception.dto;
+package com.chokchok.chokchokapi.common.dto;
 
 import java.time.LocalDateTime;
 
