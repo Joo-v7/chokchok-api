@@ -5,7 +5,7 @@ import com.chokchok.chokchokapi.common.exception.base.ConflictException;
 import com.chokchok.chokchokapi.common.exception.base.InvalidException;
 import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
 import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
-import com.chokchok.chokchokapi.common.exception.dto.ErrorResponseDto;
+import com.chokchok.chokchokapi.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
