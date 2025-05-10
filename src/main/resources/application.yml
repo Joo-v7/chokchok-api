@@ -3,10 +3,12 @@ spring:
   application:
     name: chokchok-api
 
+server:
   servlet:
     encoding:
       charset: UTF-8
       force: true
+
 
 # Eureka Client 설정
 eureka:
@@ -15,3 +17,4 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://admin:1234@localhost:8761/eureka/  # Eureka 서버 URL (로그인 정보 포함)
+
