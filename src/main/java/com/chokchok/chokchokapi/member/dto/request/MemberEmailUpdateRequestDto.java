@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size;
  * 회원의 이메일 수정을 위한 request DTO
  */
 public record MemberEmailUpdateRequestDto(
-        @Email(message = "이메일 양식을 지켜주세요.")
-        @NotBlank(message = "email을 입력해주세요.")
-        @Size(max = 100)
+        @NotBlank(message = "이메일은 필수 입력 사항입니다.")
+        @Size(max = 100, message = "이메일은 100자까지 입력 가능합니다.")
+        @Email(message = "올바른 이메일 양식이 아닙니다.")
         String email
 ) {
 }
