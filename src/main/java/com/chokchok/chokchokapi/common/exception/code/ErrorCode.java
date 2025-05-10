@@ -19,13 +19,24 @@ public enum ErrorCode {
     INVALID_MEMBER_GENDER_VALUE(4003),
     INVALID_MEMBER_STATUS_VALUE(4004),
 
+    INVALID_HEADER_REQUEST(4005),
+    INVALID_REQUEST_TOKEN(4006),
+    INVALID_ACCESS_TOKEN_REQUEST(4007),
+    INVALID_REFRESH_TOKEN_REQUEST(4008),
+    INVALID_LOGIN_REQUEST(4009),
+
+    INVALID_X_MEMBER_ID_HEADER(40010),
+    INVALID_X_MEMBER_ROLE_HEADER(40011),
+
     // HTTP_CODE 401 - 인증되지 않았거나 유효한 인증 정보가 부족
     UNAUTHORIZED(4011),
+    INVALID_MEMBER_SESSION(4012),
 
 
     // HTTP_CODE 403 - 접근 권한이 없음
     // AuthorizationException.class
     INSUFFICIENT_PERMISSION(4031),
+    FORBIDDEN(4032),
 
     // HTTP_CODE 404
     // NotFoundException.class
@@ -37,7 +48,15 @@ public enum ErrorCode {
     // ConflictException.class
     MEMBER_ALREADY_EXISTS(4091),
     MEMBER_NAME_ALREADY_EXISTS(4092),
-    MEMBER_EMAIL_ALREADY_EXISTS(4093);
+    MEMBER_EMAIL_ALREADY_EXISTS(4093),
+
+    // HTTP_CODE 500 - 서버 에러
+    CHOKCHOK_API_FEIGN_ERROR(5000),
+    AUTH_FEIGN_ERROR(5001),
+
+    CHOKCHOK_API_SERVER_ERROR(5006),
+    AUTH_API_SERVER_ERROR(5007),
+    GATEWAY_SERVER_ERROR(5008);
 
     private final int code;
 
@@ -48,4 +67,15 @@ public enum ErrorCode {
     public int getCode() {
         return code;
     }
+
+    public static ErrorCode from(int code) {
+        for (ErrorCode errorCode : values()) {
+            if (errorCode.getCode() == code) {
+                return errorCode;
+            }
+        }
+        throw new IllegalArgumentException("Unknown error code: " + code);
+    }
+
 }
+

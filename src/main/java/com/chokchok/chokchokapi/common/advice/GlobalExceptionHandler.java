@@ -8,9 +8,13 @@ import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 전역 예외를 처리하는 핸들러 클래스
@@ -41,7 +45,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 유효하지 않은 요청에 대한 예외 처리 클래스
+     * 유효하지 않은 요청에 대한 예외 처리
      * @param e - InvalidException
      * @return ErrorResponseDto
      */
@@ -69,8 +73,20 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        // Validation 에러 메시지 추출
+        List<String> errorMessages = e.getBindingResult().getFieldErrors().stream()
+                // 필드 오류 메시지들만 추출
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.toList());
+
+        // 만약 오류 메시지가 하나도 없다면 기본 오류 메시지를 반환
+        if (errorMessages.isEmpty()) {
+            errorMessages.add("입력값에 오류가 있습니다.");
+        }
+
+        // 에러 메시지를 포함하여 응답 반환
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), ErrorCode.INVALID_REQUEST_PARAMETER.getCode(),e.getMessage()));
+                .body(ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), ErrorCode.INVALID_REQUEST_PARAMETER.getCode(), String.valueOf(errorMessages)));
     }
 
 }
