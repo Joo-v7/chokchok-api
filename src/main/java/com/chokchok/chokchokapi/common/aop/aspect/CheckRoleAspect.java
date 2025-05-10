@@ -23,7 +23,8 @@ import java.util.Objects;
 @Aspect
 @Component
 public class CheckRoleAspect {
-    private static final String REQUEST_ROLE_HEADER = "X-MEMBER-ROLE";
+    private static final String REQUEST_ID_HEADER = "X-MEMBER-ID";
+    private static final String REQUEST_ROLE_HEADER = "X-MEMBER-ROLES";
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private static final String ROLE_USER = "ROLE_USER";
 
@@ -37,10 +38,11 @@ public class CheckRoleAspect {
                 ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 
         String roleHeader = request.getHeader(REQUEST_ROLE_HEADER);
+        String idHeader = request.getHeader(REQUEST_ID_HEADER);
 
         // 인증된 사용자인지 확인
-        if (roleHeader == null) {
-            throw new AuthorizationException(ErrorCode.UNAUTHORIZED, "인증되지 않은 사용자 입니다.");
+        if (idHeader == null || roleHeader == null) {
+            throw new AuthorizationException(ErrorCode.UNAUTHORIZED, "X-MEMBER-ID, X-MEMBER-ROLES 헤더가 없습니다.");
         }
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
