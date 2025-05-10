@@ -24,6 +24,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    private static final String X_MEMBER_ID = "X-MEMBER-ID";
+
     /**
      * POST 요청 - 회원가입
      * @param memberRegisterRequestDto
@@ -51,7 +53,7 @@ public class MemberController {
     @CheckRole(hasAnyRole = {"ROLE_USER", "ROLE_ADMIN"})
     @PutMapping("/username")
     public ResponseDto<MemberUpdateResponseDto> updateMemberUsername(
-            @RequestHeader("X-MEMBER-ID") Long memberId,
+            @RequestHeader(X_MEMBER_ID) Long memberId,
             @Valid @RequestBody MemberUsernameUpdateRequestDto memberUsernameUpdateRequestDto
     ) {
         MemberUpdateResponseDto response = memberService.updateUsername(memberId, memberUsernameUpdateRequestDto);
@@ -71,7 +73,7 @@ public class MemberController {
     @CheckRole(hasAnyRole = {"ROLE_USER", "ROLE_ADMIN"})
     @PutMapping("/email")
     public ResponseDto<MemberUpdateResponseDto> updateMemberEmail(
-            @RequestHeader("X-MEMBER-ID") Long memberId,
+            @RequestHeader(X_MEMBER_ID) Long memberId,
             @Valid @RequestBody MemberEmailUpdateRequestDto memberEmailUpdateRequestDto
     ) {
         MemberUpdateResponseDto response = memberService.updateEmail(memberId, memberEmailUpdateRequestDto);
@@ -91,7 +93,7 @@ public class MemberController {
     @CheckRole(hasAnyRole = {"ROLE_USER", "ROLE_ADMIN"})
     @PutMapping("/password")
     public ResponseDto<MemberUpdateResponseDto> updateMemberPassword(
-            @RequestHeader("X-MEMBER-ID") Long memberId,
+            @RequestHeader(X_MEMBER_ID) Long memberId,
             @Valid @RequestBody MemberPasswordUpdateRequestDto memberPasswordUpdateRequestDto
     ) {
         MemberUpdateResponseDto response = memberService.updatePassword(memberId, memberPasswordUpdateRequestDto);
@@ -103,14 +105,14 @@ public class MemberController {
     }
 
     /**
-     * DELETE 요청 - 회원 탈퇴
+     * DELETE 요청 - 회원탈퇴
      * @param memberId
      * @return MemberStatusResponseDto
      */
     @CheckRole(hasAnyRole = {"ROLE_USER", "ROLE_ADMIN"})
     @DeleteMapping("/withdraw")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<MemberStatusResponseDto> withdraw(@RequestHeader("X-MEMBER-ID") Long memberId) {
+    public ResponseDto<MemberStatusResponseDto> withdraw(@RequestHeader(X_MEMBER_ID) Long memberId) {
         MemberStatusResponseDto response = memberService.withdraw(memberId);
         return ResponseDto.<MemberStatusResponseDto>builder()
                 .success(true)

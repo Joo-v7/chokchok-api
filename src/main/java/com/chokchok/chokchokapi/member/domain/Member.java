@@ -28,7 +28,7 @@ public class Member {
     @JoinColumn(name = "role_id", nullable = false)
     private MemberRole memberRole;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade_id", nullable = false)
     private MemberGrade memberGrade;
 
@@ -59,7 +59,7 @@ public class Member {
     @Column
     private LocalDateTime lastLoginAt;
 
-    private Member(MemberRole memberRole, MemberGrade memberGrade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
+    private Member(MemberRole memberRole, MemberGrade memberGrade, String username, String email, String password, LocalDate dateOfBirth, Gender gender) {
         this.memberRole = memberRole;
         this.memberGrade = memberGrade;
         this.username = username;
@@ -74,8 +74,8 @@ public class Member {
      * 회원을 생성하는 정적 팰토리 메소드
      * @return Member
      */
-    public static Member create(MemberRole memberRole, MemberGrade memberGrade, String email, String password, String username, LocalDate dateOfBirth, Gender gender) {
-        Member member = new Member(memberRole, memberGrade, email, password, username, dateOfBirth, gender);
+    public static Member create(MemberRole memberRole, MemberGrade memberGrade, String username, String email, String password, LocalDate dateOfBirth, Gender gender) {
+        Member member = new Member(memberRole, memberGrade, username, email, password, dateOfBirth, gender);
         return member;
     }
 

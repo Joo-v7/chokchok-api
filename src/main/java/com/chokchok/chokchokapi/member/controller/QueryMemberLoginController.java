@@ -1,7 +1,7 @@
 package com.chokchok.chokchokapi.member.controller;
 
 import com.chokchok.chokchokapi.common.dto.ResponseDto;
-import com.chokchok.chokchokapi.member.dto.response.MemberLoginResponseDto;
+import com.chokchok.chokchokapi.member.dto.response.MemberLoginInfoResponseDto;
 import com.chokchok.chokchokapi.member.service.QueryMemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,17 +20,17 @@ public class QueryMemberLoginController {
     private final QueryMemberService queryMemberService;
 
     /**
-     * 회원이 로그인에 사용하는 email 로 회원의 정보와 권한을 조회
+     * 회원이 로그인에 사용하는 id인 email로 회원의 정보와 권한을 조회
      * @param email
      * @return MemberLoginResponseDto
      */
     @GetMapping("/login/{email}")
-    public ResponseDto<MemberLoginResponseDto> doLogin(@PathVariable String email) {
-        MemberLoginResponseDto memberLoginResponseDto = queryMemberService.findMemberLoginInfoByEmail(email);
-        return ResponseDto.<MemberLoginResponseDto>builder()
+    public ResponseDto<MemberLoginInfoResponseDto> doLogin(@PathVariable String email) {
+        MemberLoginInfoResponseDto memberLoginInfoResponseDto = queryMemberService.findMemberLoginInfoByEmail(email);
+        return ResponseDto.<MemberLoginInfoResponseDto>builder()
                 .success(true)
                 .status(HttpStatus.OK)
-                .data(memberLoginResponseDto)
+                .data(memberLoginInfoResponseDto)
                 .build();
     }
 

@@ -56,9 +56,9 @@ public class MemberService {
         Member member = Member.create(
                 memberRole,
                 memberGrade,
+                memberRegisterRequestDto.username(),
                 memberRegisterRequestDto.email(),
                 encodedPassword,
-                memberRegisterRequestDto.username(),
                 memberRegisterRequestDto.dateOfBirth(),
                 memberRegisterRequestDto.gender()
         );
@@ -106,7 +106,7 @@ public class MemberService {
         String username = memberUsernameUpdateRequestDto.username();
 
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: " + memberId)
         );
 
         checkUsernameDuplication(username);
@@ -136,7 +136,7 @@ public class MemberService {
         String email = memberEmailUpdateRequestDto.email();
 
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with: " + memberId)
         );
 
         checkEmailDuplication(email);
@@ -167,7 +167,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(password);
 
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: " + memberId)
         );
 
         member.updatePassword(encodedPassword);
@@ -183,7 +183,7 @@ public class MemberService {
     @Transactional
     public MemberStatusResponseDto withdraw(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: {}" + memberId)
+                () -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: " + memberId)
         );
 
         member.updateStatus(Status.DELETED);

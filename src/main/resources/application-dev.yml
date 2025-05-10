@@ -1,12 +1,11 @@
 # dev profile
 server:
-  port: 9100
+  port: 9200
 
 spring:
   config:
     activate:
       on-profile: dev
-
 
   h2:
     console:

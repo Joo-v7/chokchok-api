@@ -3,7 +3,7 @@ package com.chokchok.chokchokapi.member.service;
 import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
 import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.member.domain.Member;
-import com.chokchok.chokchokapi.member.dto.response.MemberLoginResponseDto;
+import com.chokchok.chokchokapi.member.dto.response.MemberLoginInfoResponseDto;
 import com.chokchok.chokchokapi.member.dto.response.MemberResponseDto;
 import com.chokchok.chokchokapi.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +27,10 @@ public class QueryMemberService {
      * @return MemberLoginResponseDto
      */
     @Transactional(readOnly = true)
-    public MemberLoginResponseDto findMemberLoginInfoByEmail(String email) {
+    public MemberLoginInfoResponseDto findMemberLoginInfoByEmail(String email) {
         Member member = memberRepository.findMemberByEmail(email)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with email: {}" + email));
-        return MemberLoginResponseDto.from(member);
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with email: " + email));
+        return MemberLoginInfoResponseDto.from(member);
     }
 
     /**
@@ -41,7 +41,7 @@ public class QueryMemberService {
     @Transactional(readOnly = true)
     public MemberResponseDto findMemberById(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: {}" + memberId));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND, "Member Not Found with id: " + memberId));
         return MemberResponseDto.from(member);
     }
 

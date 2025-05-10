@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  * @param message         에러 메시지
  * @param timestamp       에러 발생 시간
  */
-
 public record ErrorResponseDto(
         boolean error,
         int httpStatusCode,

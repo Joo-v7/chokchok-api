@@ -5,7 +5,7 @@ import com.chokchok.chokchokapi.member.domain.Member;
 /**
  * Auth 서버에서 로그인을 위해 필요한 Member 정보를 담은 DTO
  */
-public record MemberLoginResponseDto(
+public record MemberLoginInfoResponseDto(
         Long id,
         String username,
         String email,
@@ -14,8 +14,8 @@ public record MemberLoginResponseDto(
         String memberRole
 ) {
     // Member -> MemberLoginResponseDto
-    public static MemberLoginResponseDto from(Member member) {
-        return new MemberLoginResponseDto(
+    public static MemberLoginInfoResponseDto from(Member member) {
+        return new MemberLoginInfoResponseDto(
                 member.getId(),
                 member.getUsername(),
                 member.getEmail(),

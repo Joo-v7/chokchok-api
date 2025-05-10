@@ -1,12 +1,13 @@
 # prod profile
 server:
-  port: 8100
+  port: 8200
 
 spring:
   config:
     activate:
       on-profile: prod
 
+    # env 파일 로드
     import: optional:file:.env[.properties]
 
   # MySQL
@@ -33,5 +34,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+    # OSIV 비활성화
+    open-in-view: false
 
 

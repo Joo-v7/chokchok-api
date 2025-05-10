@@ -20,6 +20,8 @@ public class QueryMemberController {
 
     private final QueryMemberService queryMemberService;
 
+    private static final String X_MEMBER_ID = "X-MEMBER-ID";
+
     /**
      * 회원의 정보를 조회
      * @param memberId
@@ -27,7 +29,7 @@ public class QueryMemberController {
      */
     @GetMapping("/info")
     @CheckRole(hasAnyRole = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseDto<MemberResponseDto> getMemberInfo(@RequestHeader("X-MEMBER-ID") Long memberId) {
+    public ResponseDto<MemberResponseDto> getMemberInfo(@RequestHeader(X_MEMBER_ID) Long memberId) {
         MemberResponseDto response = queryMemberService.findMemberById(memberId);
 
         return ResponseDto.<MemberResponseDto>builder()
