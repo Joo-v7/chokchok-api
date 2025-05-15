@@ -23,6 +23,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
-
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
     # OSIV 비활성화
     open-in-view: false
+
+
