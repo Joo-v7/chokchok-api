@@ -12,23 +12,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class) // Auditing 활성화 (CreatedDate 적용)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
 @Table(name = "members")
-@EntityListeners(AuditingEntityListener.class) // Auditing 활성화 (CreatedDate 적용)
+@Entity
 public class Member {
 
     @Id
     @Tsid
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     private MemberRole memberRole;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grade_id", nullable = false)
     private MemberGrade memberGrade;
 
@@ -71,7 +71,7 @@ public class Member {
     }
 
     /**
-     * 회원을 생성하는 정적 팰토리 메소드
+     * 회원을 생성하는 정적 팩토리 메소드
      * @return Member
      */
     public static Member create(MemberRole memberRole, MemberGrade memberGrade, String username, String email, String password, LocalDate dateOfBirth, Gender gender) {
