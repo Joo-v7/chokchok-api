@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원 등록/수정/삭제를 담당하는 클래스
+ * 회원 등록/수정/삭제를 담당하는 클래스입니다.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
     private final MemberRoleService memberRoleService;
     private final MemberGradeService memberGradeService;
     private final PasswordEncoder passwordEncoder;
