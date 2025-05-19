@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원권한 조회를 담당하는 서비스
+ * 회원권한 관련 서비스를 담당하는 클래스입니다.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberRoleService {
 
     private final MemberRoleRepository memberRoleRepository;
+
     private final static String DEFAULT_MEMBER_ROLE_NAME = "user";
 
     /**

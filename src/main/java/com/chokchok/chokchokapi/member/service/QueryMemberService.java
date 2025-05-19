@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원 조회를 담당하는 서비스
+ * 회원 조회를 담당하는 클래스입니다.
  */
 @Slf4j
 @RequiredArgsConstructor

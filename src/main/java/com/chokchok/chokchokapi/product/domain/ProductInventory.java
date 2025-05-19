@@ -28,7 +28,7 @@ public class ProductInventory {
     @Column
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -51,7 +51,7 @@ public class ProductInventory {
     }
 
     /**
-     * 상품 재고 수량을 업데이트합니다.
+     * 상품재고 수량을 업데이트합니다.
      * @param quantity
      */
     public void updateQuantity(Integer quantity) {
@@ -67,13 +67,11 @@ public class ProductInventory {
     }
 
     /**
-     * 상품 업데이트 일시를 업데이트합니다.
+     * 상품재고 업데이트 일시를 업데이트합니다.(수량 변경시)
      */
     public void updateUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
     }
-
-
 
 }
 

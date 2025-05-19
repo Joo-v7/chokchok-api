@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원등급 조회를 담당하는 서비스
+ * 회원등급 관련 서비스를 담당하는 클래스입니다.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberGradeService {
 
     private final MemberGradeRepository memberGradeRepository;
+
     private final static String DEFAULT_MEMBER_GRADE_NAME = "BASIC";
 
     /**

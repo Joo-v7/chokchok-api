@@ -1,15 +1,14 @@
 package com.chokchok.chokchokapi.product.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -30,7 +29,7 @@ public class Product {
     private Integer price;
 
     @Column(nullable = false)
-    private Integer discountPrice;
+    private Integer discountRate;
 
     @Column(nullable = false)
     private String description;
@@ -49,28 +48,35 @@ public class Product {
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<ProductImage> images;
+    private List<ProductImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<ProductInventory> inventories;
-
-    private Product(String name, Integer price, Integer discountPrice, String description) {
+    private Product(String name, Integer price, Integer discountRate, String description, Float moistureLevel) {
         this.name = name;
         this.price = price;
-        this.discountPrice = discountPrice;
+        this.discountRate = discountRate;
         this.description = description;
+        this.moistureLevel = Objects.requireNonNullElse(moistureLevel, 0F);
     }
 
     /**
      * 상품을 생성하는 정적 팩토리 메소드
      * @param name
      * @param price
-     * @param discountPrice
+     * @param discountRate
      * @param description
      * @return Product
      */
-    public static Product create(String name, Integer price, Integer discountPrice, String description) {
-        return new Product(name, price, discountPrice, description);
+    public static Product create(String name, Integer price, Integer discountRate, String description, Float moistureLevel) {
+        return new Product(name, price, discountRate, description, moistureLevel);
+    }
+
+    /**
+     * 상품에 이미지 정보를 추가합니다.
+     * @param image
+     */
+    public void addImage(ProductImage image) {
+        images.add(image);
+        image.setProduct(this); // 연관관계 양방향 동기화
     }
 
     /**

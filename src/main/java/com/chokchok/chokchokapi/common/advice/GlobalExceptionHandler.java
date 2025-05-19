@@ -1,9 +1,6 @@
 package com.chokchok.chokchokapi.common.advice;
 
-import com.chokchok.chokchokapi.common.exception.base.AuthorizationException;
-import com.chokchok.chokchokapi.common.exception.base.ConflictException;
-import com.chokchok.chokchokapi.common.exception.base.InvalidException;
-import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
+import com.chokchok.chokchokapi.common.exception.base.*;
 import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
@@ -87,6 +84,17 @@ public class GlobalExceptionHandler {
         // 에러 메시지를 포함하여 응답 반환
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), ErrorCode.INVALID_REQUEST_PARAMETER.getCode(), String.valueOf(errorMessages)));
+    }
+
+    /**
+     * RuntimeException 예외 처리
+     * @param e
+     * @return ErrorResponseDto
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponseDto.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.CHOKCHOK_API_SERVER_ERROR.getCode(), e.getMessage()));
     }
 
 }
