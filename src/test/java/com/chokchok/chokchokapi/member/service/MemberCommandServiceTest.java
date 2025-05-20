@@ -2,7 +2,6 @@ package com.chokchok.chokchokapi.member.service;
 
 import com.chokchok.chokchokapi.common.exception.base.ConflictException;
 import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
-import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.member.domain.Gender;
 import com.chokchok.chokchokapi.member.domain.Member;
 import com.chokchok.chokchokapi.member.domain.MemberGrade;
@@ -16,7 +15,6 @@ import com.chokchok.chokchokapi.member.repository.MemberGradeRepository;
 import com.chokchok.chokchokapi.member.repository.MemberRepository;
 import com.chokchok.chokchokapi.member.repository.MemberRoleRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +28,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-class MemberServiceTest {
+class MemberCommandServiceTest {
 
     @InjectMocks
-    private MemberService memberService;
+    private MemberCommandService memberCommandService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -45,10 +43,10 @@ class MemberServiceTest {
     private MemberGradeRepository memberGradeRepository;
 
     @Mock
-    private MemberGradeService memberGradeService;
+    private MemberGradeQueryService memberGradeQueryService;
 
     @Mock
-    private MemberRoleService memberRoleService;
+    private MemberRoleQueryService memberRoleQueryService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -71,12 +69,12 @@ class MemberServiceTest {
         // when
         Mockito.when(memberRepository.existsMemberByUsername(Mockito.anyString())).thenReturn(false);
         Mockito.when(memberRepository.existsMemberByEmail(Mockito.anyString())).thenReturn(false);
-        Mockito.when(memberRoleService.getDefaultMemberRoleEntity()).thenReturn(memberRole);
-        Mockito.when(memberGradeService.getDefaultMemberGradeEntity()).thenReturn(memberGrade);
+        Mockito.when(memberRoleQueryService.getDefaultMemberRoleEntity()).thenReturn(memberRole);
+        Mockito.when(memberGradeQueryService.getDefaultMemberGradeEntity()).thenReturn(memberGrade);
         Mockito.when(memberRepository.save(Mockito.any(Member.class))).thenReturn(member);
 
         // then
-        Assertions.assertDoesNotThrow(() -> memberService.register(requestDto));
+        Assertions.assertDoesNotThrow(() -> memberCommandService.register(requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).save(Mockito.any(Member.class));
     }
@@ -98,7 +96,7 @@ class MemberServiceTest {
 
         // then
         Assertions.assertThrows(ConflictException.class,
-                () -> memberService.register(requestDto));
+                () -> memberCommandService.register(requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).existsMemberByUsername(Mockito.anyString());
     }
@@ -120,7 +118,7 @@ class MemberServiceTest {
 
         // then
         Assertions.assertThrows(ConflictException.class,
-                () -> memberService.register(requestDto));
+                () -> memberCommandService.register(requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).existsMemberByEmail(Mockito.anyString());
     }
@@ -144,7 +142,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
 
         // when
-        MemberUpdateResponseDto result = memberService.updateUsername(Mockito.anyLong(), requestDto);
+        MemberUpdateResponseDto result = memberCommandService.updateUsername(Mockito.anyLong(), requestDto);
 
         // then
         Assertions.assertEquals(username, result.username());
@@ -160,7 +158,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         // when then
-        Assertions.assertThrows(NotFoundException.class, () -> memberService.updateUsername(Mockito.anyLong(), requestDto));
+        Assertions.assertThrows(NotFoundException.class, () -> memberCommandService.updateUsername(Mockito.anyLong(), requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).findById(Mockito.anyLong());
     }
@@ -184,7 +182,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.existsMemberByUsername(Mockito.anyString())).thenReturn(true);
 
         // when then
-        Assertions.assertThrows(ConflictException.class, () -> memberService.updateUsername(Mockito.anyLong(), requestDto));
+        Assertions.assertThrows(ConflictException.class, () -> memberCommandService.updateUsername(Mockito.anyLong(), requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).existsMemberByUsername(Mockito.anyString());
     }
@@ -208,7 +206,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
 
         // when
-        MemberUpdateResponseDto result = memberService.updateEmail(Mockito.anyLong(), requestDto);
+        MemberUpdateResponseDto result = memberCommandService.updateEmail(Mockito.anyLong(), requestDto);
 
         // then
         Assertions.assertEquals(email, result.email());
@@ -224,7 +222,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         // when then
-        Assertions.assertThrows(NotFoundException.class, () -> memberService.updateEmail(Mockito.anyLong(), requestDto));
+        Assertions.assertThrows(NotFoundException.class, () -> memberCommandService.updateEmail(Mockito.anyLong(), requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).findById(Mockito.anyLong());
     }
@@ -248,7 +246,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.existsMemberByEmail(Mockito.anyString())).thenReturn(true);
 
         // when then
-        Assertions.assertThrows(ConflictException.class, () -> memberService.updateEmail(Mockito.anyLong(), requestDto));
+        Assertions.assertThrows(ConflictException.class, () -> memberCommandService.updateEmail(Mockito.anyLong(), requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).existsMemberByEmail(Mockito.anyString());
     }
@@ -271,7 +269,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
 
         // when then
-        Assertions.assertDoesNotThrow(() -> memberService.updatePassword(Mockito.anyLong(), requestDto));
+        Assertions.assertDoesNotThrow(() -> memberCommandService.updatePassword(Mockito.anyLong(), requestDto));
     }
 
     @Test
@@ -284,7 +282,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         // when then
-        Assertions.assertThrows(NotFoundException.class, () -> memberService.updatePassword(Mockito.anyLong(), requestDto));
+        Assertions.assertThrows(NotFoundException.class, () -> memberCommandService.updatePassword(Mockito.anyLong(), requestDto));
 
         Mockito.verify(memberRepository, Mockito.times(1)).findById(Mockito.anyLong());
     }
@@ -306,7 +304,7 @@ class MemberServiceTest {
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
 
         // when then
-        Assertions.assertDoesNotThrow(() -> memberService.withdraw(Mockito.anyLong()));
+        Assertions.assertDoesNotThrow(() -> memberCommandService.withdraw(Mockito.anyLong()));
     }
 
 

@@ -12,7 +12,7 @@ import com.chokchok.chokchokapi.member.dto.request.MemberUsernameUpdateRequestDt
 import com.chokchok.chokchokapi.member.dto.response.MemberRegisterResponseDto;
 import com.chokchok.chokchokapi.member.dto.response.MemberStatusResponseDto;
 import com.chokchok.chokchokapi.member.dto.response.MemberUpdateResponseDto;
-import com.chokchok.chokchokapi.member.service.MemberService;
+import com.chokchok.chokchokapi.member.service.MemberCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,8 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Import(CheckRoleAspect.class)
-@WebMvcTest(controllers = MemberController.class)
-class MemberControllerTest {
+@WebMvcTest(controllers = MemberCommandController.class)
+class MemberCommandControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,7 +43,7 @@ class MemberControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private MemberService memberService;
+    private MemberCommandService memberCommandService;
     private Member member;
     private MemberRegisterResponseDto registerResponseDto;
     private MemberUpdateResponseDto updateResponseDto;
@@ -76,7 +76,7 @@ class MemberControllerTest {
                 GENDER
         );
         registerResponseDto = MemberRegisterResponseDto.from(member);
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -91,7 +91,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.data.dateOfBirth").value(BIRTH_DATE.toString()))
                 .andExpect(jsonPath("$.data.gender").value(GENDER.getDisplayName()));
 
-        Mockito.verify(memberService).register(Mockito.any(MemberRegisterRequestDto.class));
+        Mockito.verify(memberCommandService).register(Mockito.any(MemberRegisterRequestDto.class));
     }
 
     @Test
@@ -106,7 +106,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -115,7 +115,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -130,7 +130,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -139,7 +139,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -154,7 +154,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -163,7 +163,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -178,7 +178,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -187,7 +187,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -202,7 +202,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -211,7 +211,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -226,7 +226,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -235,7 +235,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -250,7 +250,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -259,7 +259,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -274,7 +274,7 @@ class MemberControllerTest {
         );
 
         // given
-        Mockito.when(memberService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
+        Mockito.when(memberCommandService.register(Mockito.any(MemberRegisterRequestDto.class))).thenReturn(registerResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(post("/api/members")
@@ -283,7 +283,7 @@ class MemberControllerTest {
 
         //then
         perform.andDo(print()).andExpect(status().isBadRequest());
-        Mockito.verify(memberService, Mockito.never()).register(Mockito.any());
+        Mockito.verify(memberCommandService, Mockito.never()).register(Mockito.any());
     }
 
     @Test
@@ -292,7 +292,7 @@ class MemberControllerTest {
         MemberUsernameUpdateRequestDto requestDto = new MemberUsernameUpdateRequestDto("chokchok");
 
         // given
-        Mockito.when(memberService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/username")
@@ -305,7 +305,7 @@ class MemberControllerTest {
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
-        Mockito.verify(memberService).updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class));
+        Mockito.verify(memberCommandService).updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class));
 
     }
 
@@ -315,7 +315,7 @@ class MemberControllerTest {
         MemberUsernameUpdateRequestDto requestDto = new MemberUsernameUpdateRequestDto(null);
 
         // given
-        Mockito.when(memberService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/username")
@@ -337,7 +337,7 @@ class MemberControllerTest {
         MemberUsernameUpdateRequestDto requestDto = new MemberUsernameUpdateRequestDto(null);
 
         // given
-        Mockito.when(memberService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateUsername(Mockito.anyLong() ,Mockito.any(MemberUsernameUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/username")
@@ -361,7 +361,7 @@ class MemberControllerTest {
         MemberEmailUpdateRequestDto requestDto = new MemberEmailUpdateRequestDto("chokchok@chokchok.site");
 
         // given
-        Mockito.when(memberService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/email")
@@ -374,7 +374,7 @@ class MemberControllerTest {
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
-        Mockito.verify(memberService).updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class));
+        Mockito.verify(memberCommandService).updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class));
     }
 
     @Test
@@ -383,7 +383,7 @@ class MemberControllerTest {
         MemberEmailUpdateRequestDto requestDto = new MemberEmailUpdateRequestDto(null);
 
         // given
-        Mockito.when(memberService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/email")
@@ -406,7 +406,7 @@ class MemberControllerTest {
         MemberEmailUpdateRequestDto requestDto = new MemberEmailUpdateRequestDto("chokchok");
 
         // given
-        Mockito.when(memberService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updateEmail(Mockito.anyLong(), Mockito.any(MemberEmailUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/email")
@@ -428,7 +428,7 @@ class MemberControllerTest {
         MemberPasswordUpdateRequestDto requestDto = new MemberPasswordUpdateRequestDto("chokchok");
 
         // given
-        Mockito.when(memberService.updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/password")
@@ -441,7 +441,7 @@ class MemberControllerTest {
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
-        Mockito.verify(memberService).updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class));
+        Mockito.verify(memberCommandService).updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class));
     }
 
     @Test
@@ -450,7 +450,7 @@ class MemberControllerTest {
         MemberPasswordUpdateRequestDto requestDto = new MemberPasswordUpdateRequestDto(null);
 
         // given
-        Mockito.when(memberService.updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class))).thenReturn(updateResponseDto);
+        Mockito.when(memberCommandService.updatePassword(Mockito.anyLong(), Mockito.any(MemberPasswordUpdateRequestDto.class))).thenReturn(updateResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(put("/api/members/password")
@@ -470,7 +470,7 @@ class MemberControllerTest {
     @DisplayName("회원탈퇴 성공")
     void withdraw_success() throws Exception {
         // given
-        Mockito.when(memberService.withdraw(Mockito.anyLong())).thenReturn(statusResponseDto);
+        Mockito.when(memberCommandService.withdraw(Mockito.anyLong())).thenReturn(statusResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(delete("/api/members/withdraw")
@@ -481,14 +481,14 @@ class MemberControllerTest {
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
-        Mockito.verify(memberService).withdraw(Mockito.anyLong());
+        Mockito.verify(memberCommandService).withdraw(Mockito.anyLong());
     }
 
     @Test
     @DisplayName("회원탈퇴 실패")
     void withdraw_InvalidMemberID() throws Exception {
         // given
-        Mockito.when(memberService.withdraw(Mockito.anyLong())).thenReturn(statusResponseDto);
+        Mockito.when(memberCommandService.withdraw(Mockito.anyLong())).thenReturn(statusResponseDto);
 
         // when
         ResultActions perform = mockMvc.perform(delete("/api/members/withdraw")
@@ -499,6 +499,6 @@ class MemberControllerTest {
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
-        Mockito.verify(memberService).withdraw(Mockito.anyLong());
+        Mockito.verify(memberCommandService).withdraw(Mockito.anyLong());
     }
 }

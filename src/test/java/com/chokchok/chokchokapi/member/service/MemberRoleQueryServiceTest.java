@@ -13,13 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-class MemberRoleServiceTest {
+class MemberRoleQueryServiceTest {
 
     @InjectMocks
-    private MemberRoleService memberRoleService;
+    private MemberRoleQueryService memberRoleQueryService;
 
     @Mock
     private MemberRoleRepository memberRoleRepository;
@@ -32,7 +30,7 @@ class MemberRoleServiceTest {
 
         // then
         Assertions.assertThrows(NotFoundException.class,
-                () -> memberRoleService.getDefaultMemberRoleEntity());
+                () -> memberRoleQueryService.getDefaultMemberRoleEntity());
 
     }
 

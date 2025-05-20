@@ -13,13 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-class MemberGradeServiceTest {
+class MemberGradeQueryServiceTest {
 
     @InjectMocks
-    private MemberGradeService memberGradeService;
+    private MemberGradeQueryService memberGradeQueryService;
 
     @Mock
     private MemberGradeRepository memberGradeRepository;
@@ -31,6 +29,6 @@ class MemberGradeServiceTest {
         Mockito.when(memberGradeRepository.findByName(Mockito.anyString())).thenReturn(Optional.empty());
 
         // then
-        Assertions.assertThrows(NotFoundException.class, () -> memberGradeService.getDefaultMemberGradeEntity());
+        Assertions.assertThrows(NotFoundException.class, () -> memberGradeQueryService.getDefaultMemberGradeEntity());
     }
 }
