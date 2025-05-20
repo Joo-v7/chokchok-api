@@ -29,6 +29,7 @@ public enum ErrorCode {
     INVALID_X_MEMBER_ROLE_HEADER(40011),
 
     INVALID_PRODUCT_QUANTITY(40012),
+    INVALID_PRODUCT_TYPE_CODE(40013),
 
     // HTTP_CODE 401 - 인증되지 않았거나 유효한 인증 정보가 부족
     UNAUTHORIZED(4011),
