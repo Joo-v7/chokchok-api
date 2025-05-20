@@ -17,36 +17,38 @@ import java.util.List;
  * @param images
  * @param quantity
  */
-public record ProductResponseDto(
+public record ProductDetailsResponseDto(
         Long id,
         String name,
         Integer price,
         Integer discountRate,
         String description,
+        String brand,
         Float moistureLevel,
         List<String> images,
         Integer quantity,
         boolean isSoldOut
 ) {
 
-    // Product -> ProductResponseDto
-    public static ProductResponseDto from(Product product, ProductInventory productInventory) {
+    // Product, quantity, isSoldOut -> ProductDetailsResponseDto
+    public static ProductDetailsResponseDto from(Product product, Integer quantity, boolean isSoldOut) {
         List<String> images = new ArrayList<>();
 
         if(product.getImages() != null && !product.getImages().isEmpty()) {
             images = product.getImages().stream().map(ProductImage::getUrl).toList();
         }
 
-        return new ProductResponseDto(
+        return new ProductDetailsResponseDto(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getDiscountRate(),
                 product.getDescription(),
+                product.getBrand(),
                 product.getMoistureLevel(),
                 images,
-                productInventory.getQuantity(),
-                productInventory.isSoldOut()
+                quantity,
+                isSoldOut
         );
     }
 }

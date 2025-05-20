@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class QueryMemberService {
+public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 

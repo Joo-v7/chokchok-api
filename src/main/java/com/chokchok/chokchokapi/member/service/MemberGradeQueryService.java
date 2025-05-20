@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 회원등급 관련 서비스를 담당하는 클래스입니다.
+ * 회원등급 조회 관련 서비스를 담당하는 클래스입니다.
  */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class MemberGradeService {
+public class MemberGradeQueryService {
 
     private final MemberGradeRepository memberGradeRepository;
 

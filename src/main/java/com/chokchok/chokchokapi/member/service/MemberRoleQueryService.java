@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class MemberRoleService {
+public class MemberRoleQueryService {
 
     private final MemberRoleRepository memberRoleRepository;
 

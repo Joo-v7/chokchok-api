@@ -28,12 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class MemberCommandService {
 
     private final MemberRepository memberRepository;
 
-    private final MemberRoleService memberRoleService;
-    private final MemberGradeService memberGradeService;
+    private final MemberRoleQueryService memberRoleQueryService;
+    private final MemberGradeQueryService memberGradeQueryService;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -50,8 +50,8 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(memberRegisterRequestDto.password());
 
         // Default MemberRole, MemberGrade
-        MemberRole memberRole = memberRoleService.getDefaultMemberRoleEntity();
-        MemberGrade memberGrade = memberGradeService.getDefaultMemberGradeEntity();
+        MemberRole memberRole = memberRoleQueryService.getDefaultMemberRoleEntity();
+        MemberGrade memberGrade = memberGradeQueryService.getDefaultMemberGradeEntity();
 
         // Member Entity 생성
         Member member = Member.create(

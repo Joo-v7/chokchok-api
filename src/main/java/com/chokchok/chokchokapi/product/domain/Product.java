@@ -1,5 +1,6 @@
 package com.chokchok.chokchokapi.product.domain;
 
+import com.chokchok.chokchokapi.product.converter.ProductTypeCodeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,8 +35,15 @@ public class Product {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private String brand;
+
     @Column
     private Float moistureLevel;
+
+    @Column(name = "product_type_code")
+    @Convert(converter = ProductTypeCodeConverter.class)
+    private ProductTypeCode productTypeCode;
 
     @CreatedDate
     @Column(updatable = false)
@@ -50,12 +58,14 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
-    private Product(String name, Integer price, Integer discountRate, String description, Float moistureLevel) {
+    private Product(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode) {
         this.name = name;
         this.price = price;
         this.discountRate = discountRate;
         this.description = description;
+        this.brand = brand;
         this.moistureLevel = Objects.requireNonNullElse(moistureLevel, 0F);
+        this.productTypeCode = Objects.requireNonNullElse(productTypeCode, ProductTypeCode.NONE);
     }
 
     /**
@@ -64,10 +74,12 @@ public class Product {
      * @param price
      * @param discountRate
      * @param description
+     * @param moistureLevel
+     * @param productTypeCode
      * @return Product
      */
-    public static Product create(String name, Integer price, Integer discountRate, String description, Float moistureLevel) {
-        return new Product(name, price, discountRate, description, moistureLevel);
+    public static Product create(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode) {
+        return new Product(name, price, discountRate, description, brand, moistureLevel, productTypeCode);
     }
 
     /**
