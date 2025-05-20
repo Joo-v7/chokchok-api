@@ -6,6 +6,7 @@ import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
 import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
 import com.chokchok.chokchokapi.product.domain.Product;
 import com.chokchok.chokchokapi.product.domain.ProductInventory;
+import com.chokchok.chokchokapi.product.dto.response.ProductInventoryDto;
 import com.chokchok.chokchokapi.product.repository.ProductInventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class ProductInventoryService {
+public class ProductInventoryCommandService {
 
     private final ProductInventoryRepository productInventoryRepository;
 
@@ -30,26 +31,38 @@ public class ProductInventoryService {
      * @return ProductInventory
      */
     @Transactional
-    public ProductInventory register(Product product, Integer quantity) {
+    public ProductInventoryDto register(Product product, Integer quantity) {
         ProductInventory productInventory = ProductInventory.create(product, quantity);
-        return saveInventory(productInventory);
+        ProductInventory result = saveInventory(productInventory);
+
+        return ProductInventoryDto.from(result);
     }
 
     /**
-     * 상품 재고 정보를 저장합니다.
-     * @param inventory
-     * @return
+     * 상품재고 수량, 매진 여부를 수정합니다.
+     * @param productId
+     * @param requiredQuantity
+     * @param soldOut
+     * @return ProductInventory
      */
-    private ProductInventory saveInventory(ProductInventory inventory) {
-        try {
-            return productInventoryRepository.save(inventory);
-        } catch(DataIntegrityViolationException e) {
-            log.error("상품재고 저장 중 데이터 무결성 위반 발생: {}", e.getMessage());
-            throw new ConflictException(ErrorCode.PRODUCT_INVENTORY_ALREADY_EXISTS, "상품 재고가 이미 존재합니다.");
-        } catch(Exception e) {
-            log.error("상품재고 저장 중 알 수 없는 오류 발생", e);
-            throw new RuntimeException("상품재고 저장 중 알 수 없는 오류가 발생했습니다.");
+    @Transactional
+    public ProductInventoryDto update(Long productId, Integer requiredQuantity, boolean soldOut) {
+        if(requiredQuantity <= 0) {
+            throw new InvalidException(ErrorCode.INVALID_PRODUCT_QUANTITY, "업데이트할 상품 수량은 1 이상이어야 합니다.");
         }
+
+        ProductInventory productInventory = productInventoryRepository.findByProductId(productId).orElseThrow(
+                () -> new NotFoundException(ErrorCode.PRODUCT_INVENTORY_NOT_FOUND, "해당 상품의 상품재고를 찾을 수 없습니다: " + productId)
+        );
+
+        // update quantity, isSoldOut
+        productInventory.updateQuantity(requiredQuantity);
+        productInventory.updateSoldOut(soldOut);
+        productInventory.updateUpdatedAt();
+        // save
+        ProductInventory result = saveInventory(productInventory);
+
+        return ProductInventoryDto.from(result);
     }
 
     /**
@@ -107,7 +120,7 @@ public class ProductInventoryService {
     }
 
     /**
-     * 상품재고 매진 처리합니다.
+     * 상품재고를 매진 처리합니다.
      * @param productId
      */
     @Transactional
@@ -123,7 +136,7 @@ public class ProductInventoryService {
     }
 
     /**
-     * 상품재고 매진 해제합니다.
+     * 상품재고의 매진을 해제합니다.
      * @param productId
      */
     @Transactional
@@ -136,6 +149,23 @@ public class ProductInventoryService {
         productInventory.updateUpdatedAt();
         // save
         saveInventory(productInventory);
+    }
+
+    /**
+     * 상품 재고 정보를 저장합니다.
+     * @param inventory
+     * @return ProductInventory
+     */
+    private ProductInventory saveInventory(ProductInventory inventory) {
+        try {
+            return productInventoryRepository.save(inventory);
+        } catch(DataIntegrityViolationException e) {
+            log.error("상품재고 저장 중 데이터 무결성 위반 발생: {}", e.getMessage());
+            throw new ConflictException(ErrorCode.PRODUCT_INVENTORY_ALREADY_EXISTS, "상품 재고가 이미 존재합니다.");
+        } catch(Exception e) {
+            log.error("상품재고 저장 중 알 수 없는 오류 발생", e);
+            throw new RuntimeException("상품재고 저장 중 알 수 없는 오류가 발생했습니다.");
+        }
     }
 
 
