@@ -8,45 +8,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 상품 등록 response DTO
+ * 리시트 용 상품 response DTO
+ * @param id
  * @param name
  * @param price
  * @param discountRate
  * @param description
+ * @param brand
  * @param moistureLevel
  * @param images
- * @param quantity
  */
-public record ProductRegisterResponseDto(
+public record ProductSimpleResponseDto(
         Long id,
         String name,
         Integer price,
         Integer discountRate,
         String description,
+        String brand,
         Float moistureLevel,
-        List<String> images,
-        Integer quantity,
-        boolean isSoldOut
+        List<String> images
 ) {
 
-    // Product -> ProductRegisterResponseDto
-    public static ProductRegisterResponseDto from(Product product, ProductInventory productInventory) {
+    // Product -> ProductSimpleResponseDto
+    public static ProductSimpleResponseDto from(Product product) {
         List<String> images = new ArrayList<>();
 
         if(product.getImages() != null && !product.getImages().isEmpty()) {
             images = product.getImages().stream().map(ProductImage::getUrl).toList();
         }
 
-        return new ProductRegisterResponseDto(
+        return new ProductSimpleResponseDto(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getDiscountRate(),
                 product.getDescription(),
+                product.getBrand(),
                 product.getMoistureLevel(),
-                images,
-                productInventory.getQuantity(),
-                productInventory.isSoldOut()
+                images
         );
     }
 }
