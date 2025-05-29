@@ -33,8 +33,9 @@ public class ProductQueryService {
 
     /**
      * 상품 ID로 상품을 조회합니다.
+     *
      * @param productId
-     * @return ProductResponseDto
+     * @return ProductDetailsResponseDto 상품 세부사항 DTO
      */
     @Transactional(readOnly = true)
     public ProductDetailsResponseDto findProductById(Long productId) {
@@ -44,15 +45,15 @@ public class ProductQueryService {
 
         ProductInventoryDto productInventoryDto = productInventoryQueryService.getProductInventoryByProductId(productId);
 
-        return ProductDetailsResponseDto.from(product, productInventoryDto.quantity(), productInventoryDto.isSoldOut());
+        return ProductDetailsResponseDto.from(product, product.getCategory(), productInventoryDto.quantity(), productInventoryDto.isSoldOut());
     }
 
     /**
      * 상품을 페이징하여 조회합니다.
      * 상품 유형 코드가 주어지면 해당 유형에 해당하는 상품만 조회하며, 주어지지 않은 경우 전체 상품을 조회합니다.
      * @param pageable
-     * @param productTypeCode ProductTypeCode
-     * @return PaginatedResponseDto<ProductResponseDto>
+     * @param productTypeCode 상품 유형 코드 ex) 베스트셀러, 추천, 인기, 할인 ...
+     * @return PaginatedResponseDto<ProductSimpleResponseDto> 상품의 기본사항이 담긴 DTO
      */
     @Transactional(readOnly = true)
     public PaginatedResponseDto<ProductSimpleResponseDto> findAll(Pageable pageable, ProductTypeCode productTypeCode) {
@@ -67,9 +68,9 @@ public class ProductQueryService {
     }
 
     /**
-     * 전체 조회된 page 객체를 바탕으로 전체 조회 화면에 내보낼 정보를 담은 dto page 객체를 반환합니다.
+     * page 객체를 바탕으로 전체 조회 화면에 내보낼 정보를 담은 dto page 객체를 반환합니다.
      * @param page
-     * @return PaginatedResponseDto<ProductSimpleResponseDto>
+     * @return PaginatedResponseDto<ProductSimpleResponseDto> 상품의 기본사항이 담긴 DTO
      */
     private PaginatedResponseDto<ProductSimpleResponseDto> getProductPaginatedResponses(Page<Product> page) {
         List<ProductSimpleResponseDto> products = page.getContent().stream()

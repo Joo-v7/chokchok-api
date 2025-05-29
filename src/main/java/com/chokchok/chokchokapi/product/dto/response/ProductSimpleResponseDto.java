@@ -1,5 +1,7 @@
 package com.chokchok.chokchokapi.product.dto.response;
 
+import com.chokchok.chokchokapi.category.domain.Category;
+import com.chokchok.chokchokapi.category.dto.response.CategoryIdNameDto;
 import com.chokchok.chokchokapi.product.domain.Product;
 import com.chokchok.chokchokapi.product.domain.ProductImage;
 import com.chokchok.chokchokapi.product.domain.ProductInventory;
@@ -26,7 +28,8 @@ public record ProductSimpleResponseDto(
         String description,
         String brand,
         Float moistureLevel,
-        List<String> images
+        List<String> images,
+        CategoryIdNameDto category
 ) {
 
     // Product -> ProductSimpleResponseDto
@@ -37,6 +40,9 @@ public record ProductSimpleResponseDto(
             images = product.getImages().stream().map(ProductImage::getUrl).toList();
         }
 
+        Category category = product.getCategory();
+        CategoryIdNameDto categoryIdNameDto = new CategoryIdNameDto(category.getId(), category.getName());
+
         return new ProductSimpleResponseDto(
                 product.getId(),
                 product.getName(),
@@ -45,7 +51,8 @@ public record ProductSimpleResponseDto(
                 product.getDescription(),
                 product.getBrand(),
                 product.getMoistureLevel(),
-                images
+                images,
+                categoryIdNameDto
         );
     }
 }

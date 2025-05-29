@@ -26,9 +26,10 @@ public class ProductInventoryCommandService {
 
     /**
      * 상품 등록 시 사용되는 상품재고 등록 메소드 입니다.
+     *
      * @param product
      * @param quantity
-     * @return ProductInventory
+     * @return ProductInventoryDto 상품재고 DTO 객체
      */
     @Transactional
     public ProductInventoryDto register(Product product, Integer quantity) {
@@ -40,10 +41,11 @@ public class ProductInventoryCommandService {
 
     /**
      * 상품재고 수량, 매진 여부를 수정합니다.
+     *
      * @param productId
      * @param requiredQuantity
      * @param soldOut
-     * @return ProductInventory
+     * @return ProductInventoryDto 상품재고 DTO 객체
      */
     @Transactional
     public ProductInventoryDto update(Long productId, Integer requiredQuantity, boolean soldOut) {
@@ -67,6 +69,7 @@ public class ProductInventoryCommandService {
 
     /**
      * 상품재고 수량을 차감합니다.
+     *
      * @param productId
      * @param requiredQuantity - 차감할 상품 개수
      * @return Integer - 차감된 상품 개수
@@ -98,6 +101,7 @@ public class ProductInventoryCommandService {
 
     /**
      * 상품재고 수량을 업데이트합니다.
+     *
      * @param productId
      * @param requiredQuantity
      * @return int 업데이트된 상품재고 수량
@@ -153,6 +157,7 @@ public class ProductInventoryCommandService {
 
     /**
      * 상품 재고 정보를 저장합니다.
+     *
      * @param inventory
      * @return ProductInventory
      */

@@ -1,5 +1,6 @@
 package com.chokchok.chokchokapi.product.domain;
 
+import com.chokchok.chokchokapi.category.domain.Category;
 import com.chokchok.chokchokapi.product.converter.ProductTypeCodeConverter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,7 +59,10 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
-    private Product(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode) {
+    @ManyToOne(optional = false)
+    private Category category;
+
+    private Product(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode, Category category) {
         this.name = name;
         this.price = price;
         this.discountRate = discountRate;
@@ -66,6 +70,7 @@ public class Product {
         this.brand = brand;
         this.moistureLevel = Objects.requireNonNullElse(moistureLevel, 0F);
         this.productTypeCode = Objects.requireNonNullElse(productTypeCode, ProductTypeCode.NONE);
+        this.category = category;
     }
 
     /**
@@ -74,12 +79,14 @@ public class Product {
      * @param price
      * @param discountRate
      * @param description
+     * @param brand
      * @param moistureLevel
      * @param productTypeCode
+     * @param category
      * @return Product
      */
-    public static Product create(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode) {
-        return new Product(name, price, discountRate, description, brand, moistureLevel, productTypeCode);
+    public static Product create(String name, Integer price, Integer discountRate, String description, String brand, Float moistureLevel, ProductTypeCode productTypeCode, Category category) {
+        return new Product(name, price, discountRate, description, brand, moistureLevel, productTypeCode, category);
     }
 
     /**

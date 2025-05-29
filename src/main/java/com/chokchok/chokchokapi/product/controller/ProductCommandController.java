@@ -1,5 +1,6 @@
 package com.chokchok.chokchokapi.product.controller;
 
+import com.chokchok.chokchokapi.common.aop.annotation.CheckRole;
 import com.chokchok.chokchokapi.common.dto.ResponseDto;
 import com.chokchok.chokchokapi.product.dto.request.ProductRegisterRequestDto;
 import com.chokchok.chokchokapi.product.dto.request.ProductUpdateRequestDto;
@@ -29,6 +30,7 @@ public class ProductCommandController {
      * @param productRegisterRequestDto
      * @return ProductRegisterResponseDto
      */
+    @CheckRole(hasRole = "ROLE_ADMIN")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDto<ProductDetailsResponseDto> register(
@@ -48,6 +50,7 @@ public class ProductCommandController {
      * @param productUpdateRequestDto
      * @return ResponseDto<ProductDetailsResponseDto>
      */
+    @CheckRole(hasRole = "ROLE_ADMIN")
     @PutMapping("/{id}")
     public ResponseDto<ProductDetailsResponseDto> update(
             @PathVariable Long id,
@@ -66,6 +69,7 @@ public class ProductCommandController {
      * @param id
      * @return ResponseDto<Void>
      */
+    @CheckRole(hasRole = "ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseDto<Void> delete(@PathVariable Long id) {
         productCommandService.delete(id);

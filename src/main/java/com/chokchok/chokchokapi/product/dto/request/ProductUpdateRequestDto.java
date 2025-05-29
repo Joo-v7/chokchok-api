@@ -47,6 +47,9 @@ public record ProductUpdateRequestDto(
 
         List<String> images,
 
+        @NotNull(message = "상품 카테고리는 필수 선택 사항입니다.")
+        Long categoryId,
+
         @NotNull(message = "상품 수량은 필수 입력 사항입니다.")
         @Min(value = 1, message = "상품 수량은 1개 이상이어야 합니다.")
         Integer quantity,
