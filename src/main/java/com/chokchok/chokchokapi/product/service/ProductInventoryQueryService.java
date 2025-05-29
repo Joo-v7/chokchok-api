@@ -22,8 +22,9 @@ public class ProductInventoryQueryService {
 
     /**
      * 상품 ID를 기반으로 상품 재고 정보를 조회하고 반환합니다.
+     *
      * @param productId
-     * @return ProductInventory
+     * @return ProductInventoryDto 상품재고 DTO 객체
      */
     @Transactional(readOnly = true)
     public ProductInventoryDto getProductInventoryByProductId(Long productId) {
@@ -37,7 +38,7 @@ public class ProductInventoryQueryService {
     /**
      * 상품 ID를 통해 해당 상품의 재고 수량을 리턴합니다.
      * @param productId
-     * @return Integer
+     * @return Integer 현재 상품재고 수량
      */
     @Transactional(readOnly = true)
     public Integer findProductInventoryQuantityByProductId(Long productId) {

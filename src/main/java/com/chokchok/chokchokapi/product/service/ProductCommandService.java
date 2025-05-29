@@ -1,5 +1,8 @@
 package com.chokchok.chokchokapi.product.service;
 
+import com.chokchok.chokchokapi.category.domain.Category;
+import com.chokchok.chokchokapi.category.service.CategoryCommandService;
+import com.chokchok.chokchokapi.category.service.CategoryQueryService;
 import com.chokchok.chokchokapi.common.exception.base.ConflictException;
 import com.chokchok.chokchokapi.common.exception.base.NotFoundException;
 import com.chokchok.chokchokapi.common.exception.code.ErrorCode;
@@ -27,14 +30,19 @@ public class ProductCommandService {
 
     private final ProductRepository productRepository;
     private final ProductInventoryCommandService productInventoryCommandService;
+    private final CategoryQueryService categoryQueryService;
 
     /**
      * 상품을 생성하여 저장합니다.
+     *
      * @param requestDto
-     * @return ProductResponseDto 생성된 상품 객체
+     * @return ProductDetailsResponseDto 상품의 세부사항이 담긴 DTO 객체
      */
     @Transactional
     public ProductDetailsResponseDto register(ProductRegisterRequestDto requestDto) {
+        // Category
+        Category category = categoryQueryService.getCategoryEntity(requestDto.categoryId());
+
         // Product
         Product product = Product.create(
                 requestDto.name(),
@@ -43,7 +51,8 @@ public class ProductCommandService {
                 requestDto.description(),
                 requestDto.brand(),
                 requestDto.moistureLevel(),
-                requestDto.productTypeCode()
+                requestDto.productTypeCode(),
+                category
         );
 
         // ProductImage
@@ -60,14 +69,15 @@ public class ProductCommandService {
         // ProductInventory save
         ProductInventoryDto savedProductInventoryDto = productInventoryCommandService.register(savedProduct, requestDto.quantity());
 
-        return ProductDetailsResponseDto.from(savedProduct, savedProductInventoryDto.quantity(), savedProductInventoryDto.isSoldOut());
+        return ProductDetailsResponseDto.from(savedProduct, savedProduct.getCategory(), savedProductInventoryDto.quantity(), savedProductInventoryDto.isSoldOut());
     }
 
     /**
      * 상품 정보를 수정하고, 수정된 상품 정보를 DTO로 반환합니다.
+     *
      * @param id
      * @param requestDto
-     * @return ProductDetailsResponseDto
+     * @return ProductDetailsResponseDto 상품의 세부사항이 담긴 DTO 객체
      */
     @Transactional
     public ProductDetailsResponseDto update(Long id, ProductUpdateRequestDto requestDto) {
@@ -90,7 +100,7 @@ public class ProductCommandService {
         // product save
         Product savedProduct = saveProduct(product);
 
-        return ProductDetailsResponseDto.from(savedProduct, productInventoryDto.quantity(), productInventoryDto.isSoldOut());
+        return ProductDetailsResponseDto.from(savedProduct, savedProduct.getCategory(), productInventoryDto.quantity(), productInventoryDto.isSoldOut());
     }
 
     /**
@@ -109,7 +119,7 @@ public class ProductCommandService {
     }
 
     /**
-     * 상품을 등록합니다.
+     * 상품을 저장하고, 예외를 처리합니다.
      * @param product
      * @return Product
      */
@@ -121,7 +131,7 @@ public class ProductCommandService {
             throw new ConflictException(ErrorCode.PRODUCT_ALREADY_EXISTS, "상품이 이미 존재합니다.");
         } catch (Exception e) {
             log.error("상품 등록 중 알 수 없는 오류 발생: {}", e.getMessage());
-            throw new RuntimeException("상품등록 중 알 수 없는 오류가 발생했습니다.");
+            throw new RuntimeException("상품 등록 중 오류가 발생했습니다.");
         }
     }
 

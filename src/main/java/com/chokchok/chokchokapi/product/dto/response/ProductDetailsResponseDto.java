@@ -1,5 +1,7 @@
 package com.chokchok.chokchokapi.product.dto.response;
 
+import com.chokchok.chokchokapi.category.domain.Category;
+import com.chokchok.chokchokapi.category.dto.response.CategoryIdNameDto;
 import com.chokchok.chokchokapi.product.domain.Product;
 import com.chokchok.chokchokapi.product.domain.ProductImage;
 import com.chokchok.chokchokapi.product.domain.ProductInventory;
@@ -26,17 +28,20 @@ public record ProductDetailsResponseDto(
         String brand,
         Float moistureLevel,
         List<String> images,
+        CategoryIdNameDto category,
         Integer quantity,
         boolean isSoldOut
 ) {
 
     // Product, quantity, isSoldOut -> ProductDetailsResponseDto
-    public static ProductDetailsResponseDto from(Product product, Integer quantity, boolean isSoldOut) {
+    public static ProductDetailsResponseDto from(Product product, Category category, Integer quantity, boolean isSoldOut) {
         List<String> images = new ArrayList<>();
 
         if(product.getImages() != null && !product.getImages().isEmpty()) {
             images = product.getImages().stream().map(ProductImage::getUrl).toList();
         }
+
+        CategoryIdNameDto categoryIdNameDto = new CategoryIdNameDto(category.getId(), category.getName());
 
         return new ProductDetailsResponseDto(
                 product.getId(),
@@ -47,6 +52,7 @@ public record ProductDetailsResponseDto(
                 product.getBrand(),
                 product.getMoistureLevel(),
                 images,
+                categoryIdNameDto,
                 quantity,
                 isSoldOut
         );
