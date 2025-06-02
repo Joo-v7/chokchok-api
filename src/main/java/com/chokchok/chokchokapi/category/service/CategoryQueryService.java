@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 카테고리 조회를 위한 클래스입니다.
@@ -26,6 +27,11 @@ public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
 
+    /**
+     * 카테고리 ID로 카테고리 조회 후 Entity를 반환합니다.
+     * @param id
+     * @return Category
+     */
     @Transactional(readOnly = true)
     public Category getCategoryEntity(Long id) {
         return categoryRepository.findById(id).orElseThrow(
@@ -75,5 +81,19 @@ public class CategoryQueryService {
                 .totalDataCount(page.getTotalElements())
                 .dataList(rootCategories)
                 .build();
+    }
+
+    /**
+     * 전체 카테고리를 트리 형태로 반환합니다.
+     * @return List<CategoryDetailsResponseDto>
+     */
+    @Transactional(readOnly = true)
+    public List<CategoryDetailsResponseDto> findAll() {
+        List<Category> allCategories = categoryRepository.findAll();
+
+        return allCategories.stream()
+                .filter(c -> c.getDepth() == 0)
+                .map(CategoryDetailsResponseDto::from)
+                .toList();
     }
 }

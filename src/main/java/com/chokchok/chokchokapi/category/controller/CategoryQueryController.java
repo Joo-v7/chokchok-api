@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 카테고리 조회를 위한 RestController
  */
@@ -32,7 +34,6 @@ public class CategoryQueryController {
      * @param id
      * @return CategorySimpleResponseDto
      */
-    @Transactional(readOnly = true)
     @GetMapping("/{id}")
     public ResponseDto<CategorySimpleResponseDto> getCategory(@PathVariable("id") Long id) {
         CategorySimpleResponseDto response = categoryQueryService.findCategoryById(id);
@@ -49,9 +50,8 @@ public class CategoryQueryController {
      * @param pageable
      * @return PaginatedResponseDto<CategoryDetailsResponseDto>
      */
-    @Transactional(readOnly = true)
     @GetMapping
-    public ResponseDto<PaginatedResponseDto<CategoryDetailsResponseDto>> getAll(Pageable pageable) {
+    public ResponseDto<PaginatedResponseDto<CategoryDetailsResponseDto>> getCategoriesPage(Pageable pageable) {
         PaginatedResponseDto<CategoryDetailsResponseDto> response = categoryQueryService.findAll(pageable);
         return ResponseDto.<PaginatedResponseDto<CategoryDetailsResponseDto>>builder()
                 .success(true)
@@ -59,4 +59,22 @@ public class CategoryQueryController {
                 .data(response)
                 .build();
     }
+
+    /**
+     * 카테고리를 트리 형태로 전체 조회합니다.
+     *
+     * @return List<CategoryDetailsResponseDto>
+     */
+    @GetMapping("/all")
+    public ResponseDto<List<CategoryDetailsResponseDto>> getAllCategories() {
+        List<CategoryDetailsResponseDto> response = categoryQueryService.findAll();
+
+        return ResponseDto.<List<CategoryDetailsResponseDto>>builder()
+                .success(true)
+                .status(HttpStatus.OK)
+                .data(response)
+                .build();
+    }
+
+
 }
