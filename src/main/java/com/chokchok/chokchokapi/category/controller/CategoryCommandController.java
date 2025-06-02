@@ -13,12 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 카테고리 등록/수정/삭제를 위한 RestController
+ * 관리자용 카테고리 등록/수정/삭제 API를 제공하는 RestController
  */
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/admin/categories")
 public class CategoryCommandController {
 
     private final CategoryCommandService categoryCommandService;

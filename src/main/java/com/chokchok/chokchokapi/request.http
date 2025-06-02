@@ -12,7 +12,7 @@ Content-Type: application/json
 
 ### 2. 회원 정보 조회
 GET http://localhost:9200/api/members/info
-X-MEMBER-ID: 708585662456099981
+X-MEMBER-ID: 717319487602459715
 X-MEMBER-ROLES: ROLE_USER
 
 
@@ -20,8 +20,8 @@ X-MEMBER-ROLES: ROLE_USER
 GET http://localhost:9200/api/members/login/test@example.com
 
 ### 카테고리 등록 - 부모
-POST http://localhost:9200/api/categories
-X-MEMBER-ID: 717292834485478576
+POST http://localhost:9200/api/admin/categories
+X-MEMBER-ID: 717324517151355893
 X-MEMBER-ROLES: ROLE_ADMIN
 Content-Type: application/json
 
@@ -31,8 +31,8 @@ Content-Type: application/json
 }
 
 ### 카테고리 등록 - 부모의 자식
-POST http://localhost:9200/api/categories
-X-MEMBER-ID: 717292834485478576
+POST http://localhost:9200/api/admin/categories
+X-MEMBER-ID: 717324517151355893
 X-MEMBER-ROLES: ROLE_ADMIN
 Content-Type: application/json
 
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 ### 카테고리 조회 - 전체
-GET http://localhost:9200/api/categories
+GET http://localhost:9200/api/categories/all
 
 ### 카테고리 조회 - 단일 - 부모
 GET http://localhost:9200/api/categories/1
@@ -51,12 +51,12 @@ GET http://localhost:9200/api/categories/1
 GET http://localhost:9200/api/categories/2
 
 ### 카테고리 수정 - 이름
-PUT http://localhost:9200/api/categories/2/name?name=크림
+PUT http://localhost:9200/api/admin/categories/2/name?name=크림
 X-MEMBER-ID: 717292834485478576
 X-MEMBER-ROLES: ROLE_ADMIN
 
 ### 카테고리 수정 - 부모
-PUT http://localhost:9200/api/categories/2/order
+PUT http://localhost:9200/api/admin/categories/2/order
 X-MEMBER-ID: 717292834485478576
 X-MEMBER-ROLES: ROLE_ADMIN
 Content-Type: application/json
