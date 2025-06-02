@@ -60,15 +60,20 @@ public class CategoryQueryService {
     }
 
     private PaginatedResponseDto<CategoryDetailsResponseDto> getCategoryPaginatedResponses(Page<Category> page) {
-        List<CategoryDetailsResponseDto> categories = page.getContent().stream()
+        List<CategoryDetailsResponseDto> allCategories = page.getContent().stream()
                 .map(CategoryDetailsResponseDto::from)
+                .toList();
+
+        // 루트 카테고리(깊이 0)만 필터링
+        List<CategoryDetailsResponseDto> rootCategories = allCategories.stream()
+                .filter(c -> c.depth() == 0)
                 .toList();
 
         return PaginatedResponseDto.<CategoryDetailsResponseDto>builder()
                 .totalPage(page.getTotalPages())
                 .currentPage(page.getNumber())
                 .totalDataCount(page.getTotalElements())
-                .dataList(categories)
+                .dataList(rootCategories)
                 .build();
     }
 }
